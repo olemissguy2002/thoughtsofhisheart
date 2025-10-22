@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thoughts of His Heart</title>
+  <meta name="description" content="A minimal one‑page site with parallax scrolling and a fixed background image." />
+  <meta property="og:title" content="Thoughts of His Heart" />
+  <meta name="twitter:title" content="Thoughts of His Heart" />
+  <meta name="application-name" content="Thoughts of His Heart" />
+  <meta name="apple-mobile-web-app-title" content="Thoughts of His Heart" />
+  <link rel="preload" href="img/background.jpg" as="image">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Fixed background layer -->
+  <div class="bg-fixed" role="img" aria-label="Background image"></div>
+
+  <header class="site-header">
+    <nav class="nav">
+      <a href="#home" class="brand">Thoughts of His Heart</a>
+      <div class="links">
+        <a href="#about">About</a>
+        <a href="#donations">Donations</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="hero-inner">
+      <h1 data-parallax data-speed="0.25">Thoughts of His Heart Ministries</h1>
+      <p data-parallax data-speed="0.4">The council of the Lord stands forever. The thoughts of His heart to all generations. Psalms 33:11</p>
+<!--      <a href="#about" class="cta" data-parallax data-speed="0.6">About ↓</a>
+    -->    </div>
+    <div class="floating-dot" data-parallax data-speed="-0.15" aria-hidden="true"></div>
+  </main>
+
+  <section id="about" class="section">
+    <div class="container">
+      <h2 data-parallax data-speed="0.15">About the Ministry</h2>
+      <p>
+        A weekly ministry to nursing home facilities that shares Jesus, cookies, and hugs.
+        We are volunteers who desire to bring love, light, and laughter to our communities.
+      </p>
+  
+    </div>
+  </section>
+
+  <section id="donations" class="section alt">
+    <div class="container">
+      <h2 data-parallax data-speed="0.15">Donations</h2>
+      <ul class="worklist">
+        <li data-parallax data-speed="0.15">
+          <strong>Cookie Donations</strong> — Greatfully accepted.
+        </li>
+        <!--
+        <li data-parallax data-speed="0.15">
+          <strong>FedRAMP‑Ready CI/CD</strong> — compliant controls integrated with evidence capture.
+        </li>
+        <li data-parallax data-speed="0.15">
+          <strong>Observability Upgrade</strong> — golden signals + SLOs surfaced in dashboards.
+        </li>
+      -->
+      </ul>
+    </div> 
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 data-parallax data-speed="0.15">Get in Touch</h2>
+      <p> <!--Reach out on <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a> or -->
+        email <a href="mailto:lacy@thoughtsofhisheart.com">lacy@thoughtsofhisheart.com</a>.</p>
+<!--      <form class="contact" onsubmit="event.preventDefault(); alert('Thanks! This demo form does not submit.');">
+        <label>
+          Name
+          <input type="text" placeholder="Your name" required>
+        </label>
+        <label>
+          Email
+          <input type="email" placeholder="you@example.com" required>
+        </label>
+        <label>
+          Message
+          <textarea rows="4" placeholder="How can I help?"></textarea>
+        </label>
+        <button type="submit">Send</button>
+      </form>
+    -->
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Daryl Smith — Built with vanilla HTML/CSS/JS</small>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
