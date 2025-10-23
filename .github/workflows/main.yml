@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      SITE_DIR: ./out                      # <- change if your built site folder is different
+      SITE_DIR: ./                    # <- change if your built site folder is different
       S3_BUCKET: ${{ secrets.S3_BUCKET }}  # e.g., thoughtsofhisheart-12345
       AWS_REGION: ${{ secrets.AWS_REGION }}# e.g., us-east-1
       CF_DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
