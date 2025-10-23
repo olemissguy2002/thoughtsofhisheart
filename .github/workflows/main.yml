@@ -1,0 +1,73 @@
+name: Deploy static site to S3 + CloudFront
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+# Prevent overlapping deploys
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      # If you use OIDC (recommended), these are required
+      id-token: write
+      contents: read
+
+    env:
+      SITE_DIR: ./out                  # Change if your built site lives elsewhere (e.g., ./dist or .)
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+      CF_DIST_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+
+    steps:
+      - name: Checkout repo
+      - uses: actions/checkout@v4
+
+      # (Optional) Build step – uncomment if you need to build before deploy
+      # - name: Build site
+      #   run: |
+      #     npm ci
+      #     npm run build
+
+      # ---------- OPTION A: OIDC role (recommended; no long-lived keys) ----------
+      - name: Configure AWS credentials (OIDC)
+        if: ${{ secrets.AWS_ROLE_TO_ASSUME != '' }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # ---------- OPTION B: Access keys (simple fallback) ----------
+      - name: Configure AWS credentials (access keys)
+        if: ${{ secrets.AWS_ROLE_TO_ASSUME == '' }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Sync HTML (short cache)
+        run: |
+          aws s3 sync "$SITE_DIR" "s3://$S3_BUCKET" \
+            --exclude "*" --include "*.html" \
+            --cache-control "max-age=300" \
+            --delete
+
+      - name: Sync assets (long cache, immutable)
+        run: |
+          aws s3 sync "$SITE_DIR" "s3://$S3_BUCKET" \
+            --exclude "*.html" \
+            --cache-control "public,max-age=31536000,immutable" \
+            --delete
+
+      - name: Invalidate CloudFront (HTML)
+        if: ${{ env.CF_DIST_ID != '' }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "$CF_DIST_ID" \
+            --paths "/index.html" "/*.html"
